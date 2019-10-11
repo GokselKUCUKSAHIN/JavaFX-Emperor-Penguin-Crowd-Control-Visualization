@@ -34,6 +34,7 @@ public class Main extends Application
         Circle outer = new Circle(width / 2, height / 2, height * 0.42, Color.TRANSPARENT);
         outer.setStrokeWidth(5);
         outer.setStroke(Color.RED);
+        outer.setVisible(false); // default invisible
 
         // initial Offsets
         double startX = 30;
@@ -81,7 +82,7 @@ public class Main extends Application
                 if (e.getButton() == MouseButton.PRIMARY)
                 {
                     //Left Mouse Button
-                    System.out.println("hey");
+                    //System.out.println("hey"); //debug event testing
                     penguin.move();
                 }
             });
@@ -145,6 +146,7 @@ public class Main extends Application
             //System.out.println("loop test");
             for (Penguin penguin : Penguin.penguins)
             {
+                // Update All Penguins in Penguin ArrayList
                 penguin.update();
             }
         }));
@@ -154,10 +156,10 @@ public class Main extends Application
         update.play(); //uncomment for play when start
         //
         stage.setTitle(title);
-        stage.setResizable(false);
+        stage.setResizable(false); //Fixed size Window
         stage.setScene(new Scene(root, width - 10, height - 10, backcolor));
         stage.show();
-        root.requestFocus();
+        root.requestFocus(); // for Keyboard Event handling
     }
 
     public static void main(String[] args)

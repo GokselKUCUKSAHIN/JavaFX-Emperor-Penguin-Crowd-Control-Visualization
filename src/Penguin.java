@@ -160,13 +160,18 @@ public class Penguin
 
     public void setNeighbors()
     {
+        // clear neighbor array list for avoiding duplicating object
         neighbors.clear();
+
         for (Penguin penguin : Penguin.penguins)
         {
+            // for all penguin
             if (penguin != this)
             {
+                // if current penguin not this
                 if (Utils.isInTheCircle(group.getLayoutX(), group.getLayoutY(), neighborBorder.getRadius(), penguin.getPos()))
                 {
+                    // inInTheCircle function determines whether the specified object is in a circle.
                     neighbors.add(penguin);
                 }
             }
@@ -230,6 +235,7 @@ public class Penguin
     {
         if (body.getRadius() < 25)
         {
+            // if current size less than 25
             this.body.setRadius(body.getRadius() + 1);
         }
     }
@@ -238,6 +244,7 @@ public class Penguin
     {
         if (body.getRadius() > 7)
         {
+            // if current size greater than 7
             this.body.setRadius(body.getRadius() - 1);
         }
     }

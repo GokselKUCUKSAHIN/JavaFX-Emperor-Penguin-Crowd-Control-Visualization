@@ -13,10 +13,11 @@ public class Penguin
     private Group group = new Group();
     private Circle body;
     private Circle hitBorder;
+    private Circle neighborBorder;
     private Point2D vel = new Point2D(0, 0);
     private Point2D acc = new Point2D(0, 0);
 
-    private ArrayList<Penguin> neigbors;
+    private ArrayList<Penguin> neighbors = new ArrayList<>();
     //
     public static ArrayList<Penguin> penguins = new ArrayList<>(); // Static Penguin Array
 
@@ -42,8 +43,13 @@ public class Penguin
         hitBorder = new Circle(0, 0, 30, Color.TRANSPARENT);
         hitBorder.setStrokeWidth(1.2);
         hitBorder.setStroke(Color.YELLOW);
+        //
+        neighborBorder = new Circle(0, 0, 75, Color.TRANSPARENT);
+        neighborBorder.setVisible(false);
+        neighborBorder.setStrokeWidth(1.3);
+        neighborBorder.setStroke(Color.GREEN);
         // Place in them into Group
-        group.getChildren().addAll(body, hitBorder);
+        group.getChildren().addAll(body, hitBorder, neighborBorder);
     }
 
     public Node getBody()
@@ -87,7 +93,7 @@ public class Penguin
     {
         // Pos = t * Vel
         // Vel = t * Acc;
-        acc = (vel.multiply(-0.03));
+        acc = (vel.multiply(-0.13));
         vel = vel.add(acc);
         double span = Utils.span(vel);
         if (span >= 0.1)
@@ -96,7 +102,7 @@ public class Penguin
             setPos(getPos().add(vel));
             //it means it's moving now
             //set color value according vel
-            body.setFill(Color.hsb(0, Utils.map(span, 0.1, 7, 0.01, 1), 1));
+            body.setFill(Color.hsb(0, Utils.map(span, 0.1, 1, 0.01, 1), 1));
         } else
         {
             // if too slow just stop it.
@@ -104,17 +110,70 @@ public class Penguin
             //it means it's static now
             body.setFill(bodyColor);
         }
+        if (neighbors.size() != 0)
+        {
+            moveToNeighbor();
+            /*if(!Utils.isHit(this.getPos(),neighbors.get(0).getPos(),this.hitBorder.getRadius()*2))
+            {
+
+            }
+            else
+            {
+                vel = vel.multiply(0);
+            }*/
+        }
     }
 
     public void move()
     {
-        vel = new Point2D(Utils.getRandom(-5, 5), Utils.getRandom(-5, 5));
+        vel = new Point2D(Utils.getRandom(-15, 15), Utils.getRandom(-15, 15));
         //System.out.println(acc.getX() + ", " + acc.getY());
     }
 
     public void hideShowBorder()
     {
         hitBorder.setVisible(!hitBorder.isVisible());
+    }
+
+    public void hideShowNeighborBorder()
+    {
+        neighborBorder.setVisible(!neighborBorder.isVisible());
+    }
+
+    public ArrayList<Penguin> getNeighbors()
+    {
+        return this.neighbors;
+    }
+
+    public void moveToNeighbor()
+    {
+        // Define the Closest neighbor and approach
+        // Currenty in test only 1 neighbor
+        if (neighbors.size() >= 1)
+        {
+            double fdist = Utils.fastDistance(neighbors.get(0).getPos(), this.getPos());
+            if (fdist >= Math.pow(hitBorder.getRadius() * 2 + 0.1, 2))
+            {
+                // Approach
+                System.out.println("Approach");
+                double angle = Utils.calculateAngle(this.getPos(), neighbors.get(0).getPos());
+                Point2D pnt = Utils.endPoint(this.getPos(), angle, 0.15);
+                vel = vel.add(pnt.getX() - getPos().getX(), pnt.getY() - getPos().getY());
+            } else if (fdist < Math.pow(hitBorder.getRadius() * 2 - 0.1, 2))
+            {
+                // Dispach
+                System.out.println("Dispach");
+                double angle = Utils.calculateAngle(this.getPos(), neighbors.get(0).getPos());
+                angle += 180;
+                Point2D pnt = Utils.endPoint(this.getPos(), angle, 0.15);
+                vel = vel.add(pnt.getX() - getPos().getX(), pnt.getY() - getPos().getY());
+            } else
+            {
+                // Stop!
+                System.out.println("Stop");
+                vel = vel.multiply(0);
+            }
+        }
     }
 
     //region Old Code Blocks

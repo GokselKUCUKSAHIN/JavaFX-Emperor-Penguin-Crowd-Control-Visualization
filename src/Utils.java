@@ -114,7 +114,8 @@ public class Utils
     static double map(double x, double in_min, double in_max, double out_min, double out_max)
     {
         //double map
-        return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+        double result = (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+        return result > out_max ? out_max : result;
     }
 
     static double distance(double x1, double y1, double x2, double y2)
@@ -125,6 +126,16 @@ public class Utils
     static double distance(Point2D p1, Point2D p2)
     {
         return distance(p1.getX(), p1.getY(), p2.getX(), p2.getY());
+    }
+
+    static double fastDistance(Point2D p1, Point2D p2)
+    {
+        return fastDistance(p1.getX(), p1.getY(), p2.getX(), p2.getY());
+    }
+
+    static double fastDistance(double x1, double y1, double x2, double y2)
+    {
+        return Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2);
     }
 
     static double span(Point2D vector)

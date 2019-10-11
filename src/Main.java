@@ -36,7 +36,7 @@ public class Main extends Application
         double startX = 30;
         double staryY = 30;
 
-        for (int i = -1; i < 12; i++)
+ /*       for (int i = -1; i < 12; i++)
         {
             for (int j = 0; j < 10; j++)
             {
@@ -57,18 +57,23 @@ public class Main extends Application
                 }
             }
         }
+*/
+        Penguin pingu =new Penguin(width / 2 + 150, height / 2);
+        Penguin test = new Penguin(width / 2 - 100, height / 2-100);
+        test.getNeighbors().add(pingu);
 
+        child.add(outer);
         for (Penguin penguin : Penguin.penguins)
         {
             child.add(penguin.getBody());
         }
-        child.add(outer);
         for (Penguin penguin : Penguin.penguins)
         {
             penguin.getBody().setOnMouseClicked(e -> {
                 if (e.getButton() == MouseButton.PRIMARY)
                 {
                     //Left Mouse Button
+                    System.out.println("hey");
                     penguin.move();
                 }
             });
@@ -106,8 +111,24 @@ public class Main extends Application
                 }
                 case F6:
                 {
+                    //Hide/Show neighbor Borders;
+                    for (Penguin penguin : Penguin.penguins)
+                    {
+                        penguin.hideShowNeighborBorder();
+                    }
+                    break;
+                }
+                case F7:
+                {
                     //Hide/Show Outer
                     outer.setVisible(!outer.isVisible());
+                    break;
+                }
+                case F9:
+                {
+                    //Test object
+                    test.moveToNeighbor();
+                    break;
                 }
             }
         });

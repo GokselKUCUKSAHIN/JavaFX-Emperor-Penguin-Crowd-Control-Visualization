@@ -1,8 +1,11 @@
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.shape.Circle;
 import javafx.scene.paint.Color;
+import javafx.util.Duration;
 
 import java.util.ArrayList;
 
@@ -16,6 +19,12 @@ public class Penguin
     private Circle neighborBorder;
     private Point2D vel = new Point2D(0, 0);
     private Point2D acc = new Point2D(0, 0);
+    private boolean state = false;
+
+    //private boolean pushed = false;
+    /*private Timeline pushedReset = new Timeline(new KeyFrame(Duration.millis(20), e -> {
+        //
+    }));*/
 
     private ArrayList<Penguin> neighbors = new ArrayList<>();
     //
@@ -31,6 +40,15 @@ public class Penguin
         group.setLayoutX(x);
         group.setLayoutY(y);
         initBody();
+
+       /* pushedReset.setAutoReverse(false);
+        pushedReset.setCycleCount(10);
+        pushedReset.setRate(1);
+        pushedReset.setOnFinished(e -> {
+            pushed = false;
+            vel = vel.multiply(0);
+        });*/
+
         penguins.add(this); // Add this to Penguin Array
     }
 
@@ -44,7 +62,7 @@ public class Penguin
         hitBorder.setStrokeWidth(1.2);
         hitBorder.setStroke(Color.YELLOW);
         //
-        neighborBorder = new Circle(0, 0, 75, Color.TRANSPARENT);
+        neighborBorder = new Circle(0, 0, 90, Color.TRANSPARENT); //80
         neighborBorder.setVisible(false);
         neighborBorder.setStrokeWidth(1.3);
         neighborBorder.setStroke(Color.GREEN);
@@ -89,6 +107,12 @@ public class Penguin
         setY(y);
     }
 
+    public void setState(boolean state)
+    {
+        this.state = state;
+    }
+
+
     public void update()
     {
         // Pos = t * Vel
@@ -113,21 +137,23 @@ public class Penguin
         if (neighbors.size() != 0)
         {
             moveToNeighbor();
-            /*if(!Utils.isHit(this.getPos(),neighbors.get(0).getPos(),this.hitBorder.getRadius()*2))
-            {
-
-            }
-            else
-            {
-                vel = vel.multiply(0);
-            }*/
         }
+        setNeighbors();
     }
 
     public void move()
     {
-        vel = new Point2D(Utils.getRandom(-15, 15), Utils.getRandom(-15, 15));
-        //System.out.println(acc.getX() + ", " + acc.getY());
+        double power = 5;
+        vel = new Point2D(Utils.getRandom(-power, power), Utils.getRandom(-power, power));
+        resetAllStates();
+        this.state = true;
+    }
+    public static void resetAllStates()
+    {
+        for (Penguin penguin : Penguin.penguins)
+        {
+            penguin.setState(false);
+        }
     }
 
     public void hideShowBorder()
@@ -145,33 +171,62 @@ public class Penguin
         return this.neighbors;
     }
 
+    public void setNeighbors()
+    {
+        neighbors.clear();
+        for (Penguin penguin : Penguin.penguins)
+        {
+            if (penguin != this)
+            {
+                if (Utils.isInTheCircle(group.getLayoutX(), group.getLayoutY(), neighborBorder.getRadius(), penguin.getPos()))
+                {
+                    neighbors.add(penguin);
+                }
+            }
+        }
+        System.out.println(neighbors.size());
+    }
+
+    public void moveForward(Point2D pos)
+    {
+        double angle = Utils.calculateAngle(pos, getPos());
+        Point2D pnt = Utils.endPoint(this.getPos(), angle, 0.4);
+        vel = vel.add(pnt.getX() - getPos().getX(), pnt.getY() - getPos().getY());
+        state = false;
+    }
+
     public void moveToNeighbor()
     {
-        // Define the Closest neighbor and approach
-        // Currenty in test only 1 neighbor
-        if (neighbors.size() >= 1)
+        if (neighbors.size() != 0)
         {
-            double fdist = Utils.fastDistance(neighbors.get(0).getPos(), this.getPos());
-            if (fdist >= Math.pow(hitBorder.getRadius() * 2 + 0.1, 2))
+            // if has at least 1 neighbor
+
+            if(state)
             {
-                // Approach
-                System.out.println("Approach");
-                double angle = Utils.calculateAngle(this.getPos(), neighbors.get(0).getPos());
-                Point2D pnt = Utils.endPoint(this.getPos(), angle, 0.15);
-                vel = vel.add(pnt.getX() - getPos().getX(), pnt.getY() - getPos().getY());
-            } else if (fdist < Math.pow(hitBorder.getRadius() * 2 - 0.1, 2))
+                // has been pushed
+                for (Penguin neighbor : neighbors)
+                {
+                    if (Utils.isHit(getPos(), neighbor.getPos(), hitBorder.getRadius() * 2))
+                    {
+                        //is hit
+                        neighbor.moveForward(getPos());
+                        neighbor.setState(true);
+                        state = false;
+                    }
+                }
+            }
+            else
             {
-                // Dispach
-                System.out.println("Dispach");
-                double angle = Utils.calculateAngle(this.getPos(), neighbors.get(0).getPos());
-                angle += 180;
-                Point2D pnt = Utils.endPoint(this.getPos(), angle, 0.15);
-                vel = vel.add(pnt.getX() - getPos().getX(), pnt.getY() - getPos().getY());
-            } else
-            {
-                // Stop!
-                System.out.println("Stop");
-                vel = vel.multiply(0);
+                for (Penguin neighbor : neighbors)
+                {
+                    if (Utils.fastDistance(getPos(), neighbor.getPos()) >= Math.pow(hitBorder.getRadius() * 2.6, 2))
+                    {
+                        double angle = Utils.calculateAngle(this.getPos(), neighbor.getPos());
+                        Point2D pnt = Utils.endPoint(this.getPos(), angle, 0.30);
+                        vel = vel.add(pnt.getX() - getPos().getX(), pnt.getY() - getPos().getY());
+                        state = false;
+                    }
+                }
             }
         }
     }

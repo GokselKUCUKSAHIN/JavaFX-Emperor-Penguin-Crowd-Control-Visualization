@@ -29,14 +29,17 @@ public class Main extends Application
     {
         Pane root = new Pane();
         child = root.getChildren();
-        //
+
+        //Outer Border Circle
         Circle outer = new Circle(width / 2, height / 2, height * 0.42, Color.TRANSPARENT);
         outer.setStrokeWidth(5);
         outer.setStroke(Color.RED);
+
+        // initial Offsets
         double startX = 30;
         double staryY = 30;
-
- /*       for (int i = -1; i < 12; i++)
+        // Placing Penguins in a Circle
+        for (int i = -1; i < 12; i++)
         {
             for (int j = 0; j < 10; j++)
             {
@@ -57,10 +60,15 @@ public class Main extends Application
                 }
             }
         }
-*/
-        Penguin pingu =new Penguin(width / 2 + 150, height / 2);
+
+        //
+        for (Penguin penguin : Penguin.penguins)
+        {
+            penguin.setNeighbors();
+        }
+        /*Penguin pingu =new Penguin(width / 2 + 150, height / 2);
         Penguin test = new Penguin(width / 2 - 100, height / 2-100);
-        test.getNeighbors().add(pingu);
+        test.getNeighbors().add(pingu);*/
 
         child.add(outer);
         for (Penguin penguin : Penguin.penguins)
@@ -127,7 +135,7 @@ public class Main extends Application
                 case F9:
                 {
                     //Test object
-                    test.moveToNeighbor();
+                    //test.moveToNeighbor();
                     break;
                 }
             }

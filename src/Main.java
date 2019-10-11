@@ -135,8 +135,20 @@ public class Main extends Application
                 }
                 case F9:
                 {
-                    //Test object
-                    //test.moveToNeighbor();
+                    // Decrease Size by 1
+                    for (Penguin penguin:Penguin.penguins)
+                    {
+                        penguin.decreaseSize();
+                    }
+                    break;
+                }
+                case F10:
+                {
+                    // Increase Size by 1
+                    for (Penguin penguin:Penguin.penguins)
+                    {
+                        penguin.increaseSize();
+                    }
                     break;
                 }
             }

@@ -225,6 +225,22 @@ public class Penguin
             }
         }
     }
+
+    public void increaseSize()
+    {
+        if (body.getRadius() < 25)
+        {
+            this.body.setRadius(body.getRadius() + 1);
+        }
+    }
+
+    public void decreaseSize()
+    {
+        if (body.getRadius() > 7)
+        {
+            this.body.setRadius(body.getRadius() - 1);
+        }
+    }
     //region Old Code Blocks
     /*private void checkVel()
     {

@@ -1,11 +1,8 @@
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.shape.Circle;
 import javafx.scene.paint.Color;
-import javafx.util.Duration;
 
 import java.util.ArrayList;
 
@@ -13,6 +10,7 @@ public class Penguin
 {
 
     private static Color bodyColor = Color.hsb(0, 0.01, 1);
+    public static final double R = 30;
     private Group group = new Group();
     private Circle body;
     private Circle hitBorder;
@@ -41,15 +39,15 @@ public class Penguin
     private void initBody()
     {
         // Create body
-        body = new Circle(0, 0, 12);
+        body = new Circle(0, 0, 16); //was 12 before
         body.setFill(bodyColor); // Fill with SNOW Color
         // Create border
-        hitBorder = new Circle(0, 0, 30, Color.TRANSPARENT);
+        hitBorder = new Circle(0, 0, R, Color.TRANSPARENT);
         hitBorder.setStrokeWidth(1.2);
         hitBorder.setStroke(Color.YELLOW);
         hitBorder.setVisible(false); // hide while launching
         //
-        neighborBorder = new Circle(0, 0, 90, Color.TRANSPARENT); //80 //90 is good too
+        neighborBorder = new Circle(0, 0, 3 * R, Color.TRANSPARENT); //80 //90 is good too
         neighborBorder.setVisible(false);
         neighborBorder.setStrokeWidth(1.3);
         neighborBorder.setStroke(Color.GREEN);
@@ -202,7 +200,7 @@ public class Penguin
                 for (Penguin neighbor : neighbors)
                 {
                     // for all state = true neigbors
-                    if (Utils.isHit(getPos(), neighbor.getPos(), hitBorder.getRadius() * 2))
+                    if (Utils.isHit(getPos(), neighbor.getPos(), hitBorder.getRadius() * 2)) //2
                     {
                         //is hit ?
                         neighbor.moveForward(getPos()); // push contacting neighbor toForward relative this
@@ -216,9 +214,10 @@ public class Penguin
                 for (Penguin neighbor : neighbors)
                 {
                     // for all state = false neighbors
-                    if (Utils.fastDistance(getPos(), neighbor.getPos()) >= Math.pow(hitBorder.getRadius() * 2.6, 2))
+                    if (Utils.fastDistance(getPos(), neighbor.getPos()) >= Math.pow(hitBorder.getRadius() * 2.3, 2))
                     {
-                        // Distance between this and neighbor greater than R * 2.6
+                        //2.6 was default //2.3 was cool too
+                        // Distance between this and neighbor greater than R * 2.6 //2.3 currently
 
                         double angle = Utils.calculateAngle(this.getPos(), neighbor.getPos());
                         // find next point using angle polar coordinates
@@ -233,7 +232,7 @@ public class Penguin
 
     public void increaseSize()
     {
-        if (body.getRadius() < 25)
+        if (body.getRadius() < R - 5)
         {
             // if current size less than 25
             this.body.setRadius(body.getRadius() + 1);
@@ -242,7 +241,7 @@ public class Penguin
 
     public void decreaseSize()
     {
-        if (body.getRadius() > 7)
+        if (body.getRadius() > R - 23)
         {
             // if current size greater than 7
             this.body.setRadius(body.getRadius() - 1);

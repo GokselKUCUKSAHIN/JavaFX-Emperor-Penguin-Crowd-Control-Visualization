@@ -6,6 +6,8 @@
 ![image](https://user-images.githubusercontent.com/33639948/66624145-9887d900-ebf7-11e9-9209-0c77b4bde693.png)
 ![image](https://user-images.githubusercontent.com/33639948/66624147-99206f80-ebf7-11e9-981a-4d70efa9dbb0.png)
 
+# ANIMATION SAMPLE
+![penguin](https://user-images.githubusercontent.com/33639948/66721767-8f248980-ee0e-11e9-97b4-7720bd6e01de.gif)
 A Goksel KUCUKSAHIN Software
 
 # Gif Test

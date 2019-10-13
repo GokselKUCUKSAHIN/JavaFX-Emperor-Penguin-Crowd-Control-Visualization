@@ -166,7 +166,7 @@ public class Main extends Application
                 }
             }
         });
-        update = new Timeline(new KeyFrame(Duration.millis(16), e -> {
+        update = new Timeline(new KeyFrame(Duration.millis(20), e -> {
             // 60 fps
             // System.out.println("loop test");
             for (Penguin penguin : Penguin.penguins)

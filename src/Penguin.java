@@ -97,41 +97,6 @@ public class Penguin
         this.state = state;
     }
 
-    public void update()
-    {
-        // Position = time x Velocity
-        // Velocity = time * Acceleration;
-        acc = (vel.multiply(-0.13));
-        vel = vel.add(acc);
-        double span = Utils.span(vel);
-        if (span >= 0.1)
-        {
-            // if vel bigger or equals to 0.1
-            setPos(getPos().add(vel));
-            // it means it's moving now
-            // set color value according vel
-            body.setFill(Color.hsb(0, Utils.map(span, 0.1, 1, 0.01, 1), 1));
-        } else
-        {
-            // if too slow just stop it.
-            vel = vel.multiply(0);
-            // it means it's static now
-            body.setFill(bodyColor);
-        }
-        if (neighbors.size() != 0)
-        {
-            moveToNeighbor();
-        }
-        setNeighbors();
-    }
-
-    public void move()
-    {
-        double power = 5;
-        vel = new Point2D(Utils.getRandom(-power, power), Utils.getRandom(-power, power));
-        resetAllStates();
-        this.state = true;
-    }
 
     public static void resetAllStates()
     {
@@ -177,12 +142,59 @@ public class Penguin
         //System.out.println(neighbors.size()); //debug
     }
 
+    public void update()
+    {
+        // Position = time x Velocity
+        // Velocity = time * Acceleration;
+        acc = (vel.multiply(-0.1)); //-0.13
+        vel = vel.add(acc);
+        double span = Utils.span(vel);
+        if (span >= 0.1)
+        {
+            // if vel bigger or equals to 0.1
+            setPos(getPos().add(vel));
+            // it means it's moving now
+            // set color value according vel
+            body.setFill(Color.hsb(0, Utils.map(span, 0.1, 1, 0.01, 1), 1));
+        } else
+        {
+            // if too slow just stop it.
+            vel = vel.multiply(0);
+            // it means it's static now
+            body.setFill(bodyColor);
+        }
+        setNeighbors();
+        if (neighbors.size() != 0)
+        {
+            moveToNeighbor();
+        }
+    }
+
+    public void move()
+    {
+        //double power = 4;
+        //vel = new Point2D(Utils.getRandom(-power, power), Utils.getRandom(-power, power));
+        double powerX = Utils.getRandom(2, 3.5);
+        double powerY = Utils.getRandom(2, 3.5);
+        if (Utils.getRandom(1) > 0.5)
+        {
+            powerX *= -1;
+        }
+        if (Utils.getRandom(1) > 0.5)
+        {
+            powerY *= -1;
+        }
+        vel = new Point2D(powerX, powerY);
+        resetAllStates();
+        this.state = true;
+    }
+
     public void moveForward(Point2D pos)
     {
         // calculate angle from neighbor to this
         double angle = Utils.calculateAngle(pos, getPos());
         // find next point using angle polar coordinates
-        Point2D pnt = Utils.endPoint(this.getPos(), angle, 0.4);
+        Point2D pnt = Utils.endPoint(this.getPos(), angle, 0.2);
         // pushing object amount of differance of 'pnt' and 'pos'
         vel = vel.add(pnt.getX() - getPos().getX(), pnt.getY() - getPos().getY());
         state = false; // set state to false for next step
@@ -193,7 +205,6 @@ public class Penguin
         if (neighbors.size() != 0)
         {
             // if has at least 1 neighbor
-
             if (state)
             {
                 // has been pushed
@@ -214,16 +225,14 @@ public class Penguin
                 for (Penguin neighbor : neighbors)
                 {
                     // for all state = false neighbors
-                    if (Utils.fastDistance(getPos(), neighbor.getPos()) >= Math.pow(hitBorder.getRadius() * 2.3, 2))
+                    if (Utils.fastDistance(getPos(), neighbor.getPos()) >= Math.pow(hitBorder.getRadius() * 2.36, 2))
                     {
-                        //2.6 was default //2.3 was cool too
-                        // Distance between this and neighbor greater than R * 2.6 //2.3 currently
-
+                        //2.6 was default //2.3 was cool too //2.3 has some glitches
+                        // Distance between this and neighbor greater than R * 2.6 //2.4 currently
                         double angle = Utils.calculateAngle(this.getPos(), neighbor.getPos());
                         // find next point using angle polar coordinates
-                        Point2D pnt = Utils.endPoint(this.getPos(), angle, 0.30);
+                        Point2D pnt = Utils.endPoint(this.getPos(), angle, 0.25);
                         vel = vel.add(pnt.getX() - getPos().getX(), pnt.getY() - getPos().getY());
-                        state = false;
                     }
                 }
             }
@@ -232,7 +241,7 @@ public class Penguin
 
     public void increaseSize()
     {
-        if (body.getRadius() < R - 5)
+        if (body.getRadius() < R - 9)
         {
             // if current size less than 25
             this.body.setRadius(body.getRadius() + 1);
@@ -247,7 +256,9 @@ public class Penguin
             this.body.setRadius(body.getRadius() - 1);
         }
     }
-    //region Old Code Blocks
+}
+
+//region Old Code Blocks
     /*private void checkVel()
     {
         // If too slow just stop
@@ -263,5 +274,4 @@ public class Penguin
             pushed = false;
             vel = vel.multiply(0);
         });*/
-    //endregion
-}
+//endregion

@@ -9,6 +9,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -21,6 +22,9 @@ public class Main extends Application
     public static final int width = 600;
     public static final int height = 600;
     private static Color backcolor = Color.rgb(51, 51, 51);
+
+
+    Line force = new Line(300, 400, 600, 400);
 
     private static Timeline update;
 
@@ -95,6 +99,45 @@ public class Main extends Application
                 }
             });
         }
+        //
+        force.setStrokeWidth(4);//default
+        force.setVisible(false);//default
+        child.add(force);
+        root.setOnDragDetected(e->root.startFullDrag());
+
+        //DRAG
+        for (Penguin penguin : Penguin.penguins)
+        {
+            penguin.getBody().setOnMouseDragged(e->{
+                if(e.getButton() == MouseButton.SECONDARY)
+                {
+                    force.setStartX(penguin.getX());
+                    force.setStartY(penguin.getY());
+                    force.setEndX(e.getSceneX());
+                    force.setEndY(e.getSceneY());
+
+                    // Calculate Distance
+                    double clr = Utils.distance(force.getStartX(),force.getStartY(),force.getEndX(),force.getEndY());
+                    clr = Utils.map(clr,0,500,160,0);
+
+                    force.setStroke(Color.hsb(clr,1,1));
+                    force.setVisible(true);
+                }
+            });
+        }
+
+        //RELEASE EVENT
+        for (Penguin penguin:Penguin.penguins)
+        {
+            penguin.getBody().setOnMouseReleased(e->{
+                if(e.getButton() == MouseButton.SECONDARY)
+                {
+                    force.setVisible(false);
+                    penguin.move(e.getSceneX(),e.getSceneY());
+                }
+            });
+        }
+
         //
         root.setOnKeyPressed(e -> {
             switch (e.getCode())

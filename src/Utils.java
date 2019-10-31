@@ -114,20 +114,7 @@ public class Utils
     static double map(double x, double in_min, double in_max, double out_min, double out_max)
     {
         //double map
-        double result = (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
-        if (result < out_min)
-        {
-            //result out of range
-            return out_min;
-        } else if (result > out_max)
-        {
-            //result out of range
-            return out_max;
-        } else
-        {
-            //result is in the range
-            return result;
-        }
+        return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
     }
 
     static double distance(double x1, double y1, double x2, double y2)

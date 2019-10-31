@@ -155,6 +155,10 @@ public class Penguin
             setPos(getPos().add(vel));
             // it means it's moving now
             // set color value according vel
+            if (span > 1)
+            {
+                span = 1;
+            }
             body.setFill(Color.hsb(0, Utils.map(span, 0.1, 1, 0.01, 1), 1));
         } else
         {
@@ -168,6 +172,25 @@ public class Penguin
         {
             moveToNeighbor();
         }
+    }
+
+    public void move(double mX, double mY)
+    {
+        double fdist = Utils.fastDistance(group.getLayoutX(), group.getLayoutY(), mX, mY);
+        if (fdist >= 15000)
+        {
+            fdist = 15000;
+        }
+        double power = Utils.map(fdist, 0, 15000, 0, 3);
+        //
+        double angle = Utils.calculateAngle(group.getLayoutX(), group.getLayoutY(), mX, mY);
+        //
+        double powerX = -power * Math.cos(Utils.angleToRadian(angle));
+        double powerY = power * Math.sin(Utils.angleToRadian(angle));
+        //
+        vel = new Point2D(powerX, powerY);
+        resetAllStates();
+        this.state = true;
     }
 
     public void move()
@@ -255,6 +278,16 @@ public class Penguin
             // if current size greater than 7
             this.body.setRadius(body.getRadius() - 1);
         }
+    }
+
+    public double getX()
+    {
+        return this.group.getLayoutX();
+    }
+
+    public double getY()
+    {
+        return this.group.getLayoutY();
     }
 }
 

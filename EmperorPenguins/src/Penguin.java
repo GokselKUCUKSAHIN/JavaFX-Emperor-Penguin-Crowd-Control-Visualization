@@ -9,7 +9,7 @@ public class Penguin extends Group
 {
 
     public static final double R = 30;
-    public ArrayList<Penguin> penguins = new ArrayList<>();
+    public static ArrayList<Penguin> penguins = new ArrayList<>();
     public Vec2D pos = new Vec2D();
 
     // BODY ELEMENTS
@@ -18,6 +18,12 @@ public class Penguin extends Group
     private static Color bodyColor = Color.hsb(0, 0.01, 1);
     private Circle neighborBorder;
     //
+
+    public Penguin()
+    {
+        draw();
+        penguins.add(this);
+    }
 
     public void draw()
     {
@@ -50,13 +56,4 @@ public class Penguin extends Group
         // Hide / Show Neigbor Border Property
         this.neighborBorder.setVisible(!this.neighborBorder.isVisible());
     }
-    
-
-    public void
-
-    public void setup()
-    {
-
-    }
-
 }

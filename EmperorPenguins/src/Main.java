@@ -26,6 +26,10 @@ public class Main extends Application
         Pane root = new Pane();
         child = root.getChildren();
         //
+
+
+
+        //
         root.setOnKeyPressed(e -> {
             switch (e.getCode())
             {
@@ -45,6 +49,22 @@ public class Main extends Application
                 {
                     //Show Child Count
                     System.out.println("Child Count: " + child.size());
+                    break;
+                }
+                case Q:
+                {
+                    for(Penguin penguin: Penguin.penguins)
+                    {
+                        penguin.hideShowBorder();
+                    }
+                    break;
+                }
+                case W:
+                {
+                    for(Penguin penguin: Penguin.penguins)
+                    {
+                        penguin.hideShowNeigborBorder();
+                    }
                     break;
                 }
             }

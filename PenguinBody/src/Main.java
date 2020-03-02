@@ -26,7 +26,7 @@ public class Main extends Application
         Pane root = new Pane();
         child = root.getChildren();
         //
-        Penguin penguin = new Penguin();
+        PenguinBody penguin = new PenguinBody();
         child.add(penguin);
         //
         root.setOnKeyPressed(e -> {

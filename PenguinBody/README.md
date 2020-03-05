@@ -7,3 +7,8 @@ Visualizing Cute Penguins ;)
 ![p5](https://user-images.githubusercontent.com/33639948/75634736-53edf000-5c21-11ea-96e8-c7cedbc135aa.png)
 ![p6](https://user-images.githubusercontent.com/33639948/75634737-53edf000-5c21-11ea-8855-70fe78127134.png)
 ![p7](https://user-images.githubusercontent.com/33639948/75634738-54868680-5c21-11ea-8cfb-375fd2e27c9d.png)
+
+#Slider Controls for fine testing the NODE
+
+![p8](https://user-images.githubusercontent.com/33639948/76029969-86ac2700-5f46-11ea-91a3-46e5afc22892.png)
+![p9](https://user-images.githubusercontent.com/33639948/76030144-a8a5a980-5f46-11ea-80a4-5cec53a1f765.png)

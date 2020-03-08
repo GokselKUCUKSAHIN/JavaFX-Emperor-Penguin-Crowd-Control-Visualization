@@ -1,4 +1,6 @@
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.Property;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
@@ -8,13 +10,17 @@ import java.util.ArrayList;
 
 public class PenguinBody extends Group
 {
+    DoubleProperty x = new SimpleDoubleProperty(0);
+    DoubleProperty y = new SimpleDoubleProperty(0);
 
     // variables
     double radius = 100;
     DoubleProperty scale = new SimpleDoubleProperty(1);
     // Colors
     Color backGroundColor = Color.BLACK;
-
+    private Ellipse torso;
+    private Ellipse rightEyePatch;
+    private Ellipse leftEyePatch;
 
     public PenguinBody(double size)
     {
@@ -24,6 +30,8 @@ public class PenguinBody extends Group
         scale.set(size / radius);
         this.scaleXProperty().bind(scale);
         this.scaleYProperty().bind(scale);
+        this.layoutXProperty().bind(x);
+        this.layoutYProperty().bind(y);
         //this.setScaleX(size / radius);
         //this.setScaleY(size / radius);
     }
@@ -60,9 +68,11 @@ public class PenguinBody extends Group
         //endregion Old Arc Left
 
         //region Left Eye Patch
-        Ellipse leftEyePatch = new Ellipse(-25, -45, 25, 30);
+        leftEyePatch = new Ellipse(-25, -45, 25, 30);
         leftEyePatch.setFill(Color.SNOW);
         leftEyePatch.setRotate(-35);
+        leftEyePatch.setStrokeWidth(2.1);
+        leftEyePatch.setStroke(Color.DARKGRAY);
         //endregion Left Eye Patch
 
         //region Old Arc Right
@@ -77,31 +87,32 @@ public class PenguinBody extends Group
         //endregion Old Arc Right
 
         //region Right Eye Patch
-        Ellipse rightEyePatch = new Ellipse(25, -45, 25, 30);
+        rightEyePatch = new Ellipse(25, -45, 25, 30);
         rightEyePatch.setFill(Color.SNOW);
         rightEyePatch.setRotate(35);
+        rightEyePatch.setStrokeWidth(2.1);
+        rightEyePatch.setStroke(Color.DARKGRAY);
         //endregion Right Eye Patch
 
-        //region Yellow Patch
-        Arc yPatch = new Arc(0, 18, 62, 70, 18, 25);
-        yPatch.setFill(Color.YELLOW);
-        yPatch.setType(ArcType.OPEN);
-        //endregion Yellow Patch
-
         //region Torso
-        Ellipse torso = new Ellipse(0, 18, 62, 70);
+        torso = new Ellipse(0, 18, 62, 68);
         torso.setFill(Color.SNOW);
-        torso.setStrokeWidth(2.1);
-        //torso.setStroke(Color.DARKGRAY);
         //endregion Torso
 
+        //region Shadow
+        Arc shadow = new Arc(0, 18, 62, 68,136,268);
+        shadow.setType(ArcType.OPEN);
+        shadow.setFill(Color.TRANSPARENT);
+        shadow.setStroke(Color.DARKGRAY);
+        shadow.setStrokeWidth(2.1);
+        //endregion Shadow
+
         //region Back Ground Circle
-        Circle backGroundCircle = new Circle(0, 0, radius, backGroundColor);
+        Circle backGroundCircle = new Circle(0, 0, radius - 5, backGroundColor);
         backGroundCircle.setStroke(Color.DARKGRAY);
         backGroundCircle.setStrokeWidth(2.1);
         //endregion Back Ground Circle
-        this.getChildren().addAll(backGroundCircle, torso, leftEyePatch, rightEyePatch,
-                yPatch,
+        this.getChildren().addAll(backGroundCircle, leftEyePatch, rightEyePatch, torso, shadow,
                 leftEye, rightEye, leftEyeShine, rightEyeShine, nose);
     }
 
@@ -121,4 +132,22 @@ public class PenguinBody extends Group
         }
     }
 
+    public void setFill(Color color)
+    {
+        this.torso.setFill(color);
+        this.leftEyePatch.setFill(color);
+        this.rightEyePatch.setFill(color);
+    }
+    public void switchColors(double value)
+    {
+        if(value > 1)
+        {
+            value = 1;
+        }
+        else if(value < 0)
+        {
+            value = 0;
+        }
+        this.setFill(Color.hsb(195, value, 1)); // 195 = PALE_BLUE, 0 = RED
+    }
 }

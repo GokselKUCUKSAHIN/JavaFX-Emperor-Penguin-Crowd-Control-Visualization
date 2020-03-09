@@ -116,7 +116,8 @@ public class Main extends Application
         });
         update = new Timeline(new KeyFrame(Duration.millis(16), e -> {
             //60 fps
-            System.out.println("loop test");
+            //System.out.println("loop test");
+            penguin.swag();
         }));
         update.setCycleCount(Timeline.INDEFINITE);
         update.setRate(1);

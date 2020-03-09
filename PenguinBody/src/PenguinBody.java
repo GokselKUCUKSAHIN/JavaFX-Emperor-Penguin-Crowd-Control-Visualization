@@ -150,4 +150,15 @@ public class PenguinBody extends Group
         }
         this.setFill(Color.hsb(195, value, 1)); // 195 = PALE_BLUE, 0 = RED
     }
+
+    //region SWAG
+    double swagCounter = 0;
+    public void swag()
+    {
+        this.setFill(Color.hsb(swagCounter,1,1));
+        swagCounter += 3;
+    }
+
+    //endregion SWAG
+
 }

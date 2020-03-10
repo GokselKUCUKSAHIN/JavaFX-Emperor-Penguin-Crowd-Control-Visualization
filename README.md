@@ -9,7 +9,7 @@
 # ANIMATION SAMPLE
 ![penguin](https://user-images.githubusercontent.com/33639948/66721767-8f248980-ee0e-11e9-97b4-7720bd6e01de.gif)
 
-A Goksel KUCUKSAHIN Software
+A Goksel KUCUKSAHIN Software.
 
 # Gif Test
 ![ObiWan](https://user-images.githubusercontent.com/33639948/66721103-47503300-ee0b-11e9-9a2e-0db2bd545945.gif)

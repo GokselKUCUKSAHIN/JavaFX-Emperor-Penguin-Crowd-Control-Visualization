@@ -229,7 +229,6 @@ public class Main extends Application
         stage.show();
         root.requestFocus(); // for Keyboard Event handling
     }
-
     public static void main(String[] args)
     {
         launch(args);
